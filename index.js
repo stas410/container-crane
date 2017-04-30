@@ -5,6 +5,7 @@ var bodyParser = require('body-parser');
 var app = express();
 var pack = require('./package.json');
 var crane = require('./lib/crane');
+var gogsSsh = require('./lib/gogs-ssh');
 
 app.locals.ENV = process.env.NODE_ENV;
 app.set('env', process.env.NODE_ENV);
@@ -18,9 +19,16 @@ app.use(bodyParser.json());
 
 app.post('/gogs/', (req, res) =>{
   if(crane.validate(app, req, res)) return;
-  
+
   var url = crane.url.gogs(app, req);
   return crane.deploy(app, url, req, res);
+});
+
+app.post('/gogs-ssh/', (req, res) =>{
+  if(gogsSsh.validate(app, req, res)) return;
+
+  var url = gogsSsh.url.gogs(app, req);
+  return gogsSsh.deploy(app, url, req, res);
 });
 
 
