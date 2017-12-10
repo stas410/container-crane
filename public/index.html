@@ -11,7 +11,7 @@
   term.setTextSize('10px')
   document.body.appendChild(term.html)
 
-  var ws = new WebSocket('ws://localhost:8080/')
+  var ws = new WebSocket('ws://' + location.href.split('/')[2] + '/')
   ws.onmessage = function (event) {
     console.log(event.data)
     var data = JSON.parse(event.data)
