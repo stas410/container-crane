@@ -1,15 +1,19 @@
 'use strict'
 
-const WebSocket = require('ws')
-const wss = new WebSocket.Server({ port: process.env.PORT || 3000 })
+module.exports = app => {
+  const expressWs = require('express-ws')(app)
+  const wss = expressWs.getWss()
 
-module.exports = function publish(type, payload) {
-  wss.clients.forEach(client => {
-    if (client.readyState === WebSocket.OPEN) {
-      client.send(JSON.stringify({
-        type,
-        payload
-      }))
-    }
-  })
+  app.ws('/', (ws, req) => {})
+
+  return function publish(type, payload) {
+    wss.clients.forEach(client => {
+      if (client.readyState === WebSocket.OPEN) {
+        client.send(JSON.stringify({
+          type,
+          payload
+        }))
+      }
+    })
+  }
 }

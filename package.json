@@ -9,7 +9,7 @@
     "name": "Viktor Braun (@v_b)",
     "email": "v-braun@live.de",
     "url": "www.dev-things.net"
-  },  
+  },
   "scripts": {
     "start": "node index.js",
     "test": "ava",
@@ -25,8 +25,8 @@
   "dependencies": {
     "body-parser": "^1.15.2",
     "express": "^4.14.0",
-    "request": "^2.72.0",
-    "ws": "^3.3.2"
+    "express-ws": "^3.0.0",
+    "request": "^2.72.0"
   },
   "devDependencies": {
     "ava": "^0.15.2",

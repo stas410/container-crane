@@ -10,11 +10,11 @@ WORKDIR /usr/src/app
 COPY package.json /usr/src/app/
 COPY . /usr/src/app
 
-RUN npm install
+RUN yarn
 
 # This is needed to get around ssh host key question in a non-interactive shell
 ENV GIT_SSH_COMMAND="ssh -o StrictHostKeyChecking=no"
 
 EXPOSE 3000
 
-CMD [ "npm", "start" ]
+CMD [ "yarn", "start" ]

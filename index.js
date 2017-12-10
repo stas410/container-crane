@@ -6,7 +6,7 @@ var app = express();
 var pack = require('./package.json');
 var crane = require('./lib/crane');
 var gogsSsh = require('./lib/gogs-ssh');
-var publish = require('./ws');
+var publish = require('./ws')(app);
 
 app.locals.ENV = process.env.NODE_ENV;
 app.set('env', process.env.NODE_ENV);
@@ -39,8 +39,8 @@ app.use((req, res) => {
 });
 
 var server = app.listen(app.get('port'),() => {
-  console.log(`${app.get('name')} is running on port: ${app.get('port')}!`);
+  console.log(`${app.get('name')} is running on port: ${app.get('port')}`);
 });
 
-module.exports = {server: server, app: app};
+module.exports = {server, app};
 
