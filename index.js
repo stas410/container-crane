@@ -6,6 +6,7 @@ var app = express();
 var pack = require('./package.json');
 var crane = require('./lib/crane');
 var gogsSsh = require('./lib/gogs-ssh');
+var publish = require('./ws');
 
 app.locals.ENV = process.env.NODE_ENV;
 app.set('env', process.env.NODE_ENV);
@@ -28,9 +29,10 @@ app.post('/gogs-ssh/', (req, res) =>{
   if(gogsSsh.validate(app, req, res)) return;
 
   var url = gogsSsh.url.gogs(app, req);
-  return gogsSsh.deploy(app, url, req, res);
+  return gogsSsh.deploy(app, url, req, res, publish);
 });
 
+app.use('/progress', express.static('public'));
 
 app.use((req, res) => {
   res.status(404).json({error: 'Not Found :('});
