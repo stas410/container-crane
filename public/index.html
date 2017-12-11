@@ -11,12 +11,29 @@
   term.setTextSize('10px')
   document.body.appendChild(term.html)
 
-  var ws = new WebSocket('ws://' + location.href.split('/')[2] + '/')
-  ws.onmessage = function (event) {
-    console.log(event.data)
-    var data = JSON.parse(event.data)
-    var prefix = data.type === 'stderr' ? 'stderr >> ' : ''
-    data.payload.split('\n').forEach(line => term.print(prefix + line))
+  function connect() {
+    var ws = new WebSocket('ws://' + location.href.split('/')[2] + '/')
+    ws.onmessage = function (event) {
+      var data = JSON.parse(event.data)
+      if (data.type === 'new') term.clear()
+      var prefix = data.type === 'stderr' ? 'stderr >> ' : ''
+      data.payload.split('\n').forEach(line => term.print(prefix + line))
+    }
+
+    ws.onopen = function () {
+      term.print('Websocket connected')
+    }
+
+    ws.onerror = function (error) {
+      ws.close()
+    }
+
+    ws.onclose = function (e) {
+      console.log('Socket is closed. Reconnect will be attempted in 2 seconds.', e.reason);
+      setTimeout(function () {
+        connect()
+      }, 2000)
+    }
   }
 </script>
 

@@ -1,10 +1,12 @@
 FROM node:7-alpine
 
-MAINTAINER v-braun <v-braun@live.de>
+MAINTAINER Stas Filippov <stas410@gmail.com>
 
-RUN apk update && apk add docker openssh
+RUN apk update && apk add --no-cache docker openssh
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
+
+RUN apk add --no-cache py-pip && pip install docker-compose
 
 # install the app
 COPY package.json /usr/src/app/
